@@ -1,0 +1,18 @@
+{
+  "name": "NutUI",
+  "type": "project",
+  "description": "Network UPS Tools UI Bootstrap",
+  "homepage": "https://github.com/demorfi/nutui",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "demorfi",
+      "email": "demorfi@gmail.com",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "angular-ui/bootstrap": "dev-master",
+    "fortawesome/font-awesome": "4.0.*@dev"
+  }
+}

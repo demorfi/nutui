@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>Network UPS Tools</title>
+    <link href="stylesheets/bootstrap.min.css" rel="stylesheet" />
+    <link href="stylesheets/font-awesome.min.css" rel="stylesheet" />
+    <link href="stylesheets/custom.css" rel="stylesheet" />
+</head>
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar" ng-click="isCollapsed = !isCollapsed">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="http://www.networkupstools.org/" target="_blank">
+                <i class="fa fa-bolt fa-lg"></i> Network UPS Tools
+            </a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse" collapse="!isCollapsed">
+            <form name="form" ng-submit="login()" class="navbar-form navbar-right"
+                  ng-controller="DeviceLoginCtrl" novalidate role="form">
+                <input type="hidden" ng-model="user.function" ng-init="user.function='pickups'" />
+
+                <div class="form-group">
+                    <label class="sr-only">Username:</label>
+                    <input type="text" placeholder="Username" class="form-control" ng-model="user.username" required />
+                </div>
+                <div class="form-group">
+                    <label class="sr-only">Password:</label>
+                    <input type="password" placeholder="Password" class="form-control" ng-model="user.password"
+                           required />
+                </div>
+                <button type="submit" class="btn btn-success" ng-disabled="form.$invalid">Sign in</button>
+            </form>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid ng-cloak" ng-controller="DevicesCtrl">
+    <div ng-hide="devices">Loading...</div>
+    <div class="row" ng-repeat="device in devices">
+        <div class="col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-heading clearfix">
+                    <h4 class="panel-title pull-left">{{device.system}}
+                        <small>{{device.model}}</small>
+                    </h4>
+                </div>
+                <div class="panel-body">
+                    <div class="progress" ng-controller="ProgressCtrl">
+                        <div ng-repeat="cell in cells"
+                             class="progress-bar progress-bar-{{cell.type}} progress-bar-striped"
+                             ng-class="{active: cell.isActive}" ng-style="{width: '{{cell.percent}}%'}">
+                            <span ng-class="{'sr-only': !cell.isActive}">{{device.battery}}</span>
+                        </div>
+                    </div>
+                    <dl class="dl-horizontal pull-left">
+                        <dt>Status</dt>
+                        <dd class="text-uppercase">{{device.status}}</dd>
+                        <dt>Battery</dt>
+                        <dd>{{device.battery}}</dd>
+                        <dt>Input (VAC)</dt>
+                        <dd>{{device.input_vac}}</dd>
+                        <dt>Output (VAC)</dt>
+                        <dd>{{device.output_vac}}</dd>
+                    </dl>
+                    <dl class="dl-horizontal pull-right">
+                        <dt>Host</dt>
+                        <dd>{{device.host}}</dd>
+                        <dt>Load</dt>
+                        <dd>8%</dd>
+                        <dt>Temp</dt>
+                        <dd>{{device.temp}}</dd>
+                        <dt>Runtime</dt>
+                        <dd>{{device.runtime}}</dd>
+                    </dl>
+                </div>
+                <div class="panel-footer">
+                    <div class="clearfix">
+                        <abbr title="Show all data UPS" class="pull-left initialism" role="button"
+                              ng-click="toggleCollapse()">
+                            details <span class="caret"></span>
+                        </abbr>
+
+                        <div class="pull-right text-right">
+                            <i title="Battery {{device.battery}}" class="fa fa-bolt"
+                               ng-class="{'text-primary': device.status == 'ONLINE'}"></i>
+                            <i title="Input (VAC) {{device.input_vac}}" class="fa fa-plug"
+                               ng-class="{'text-danger': device.status != 'ONLINE'}"></i>
+                        </div>
+                    </div>
+                    <div class="table-responsive" collapse="!isCollapsed">
+                        <table class="table table-hover table-striped table-condensed">
+                            <tr ng-repeat="dataList in device.data.list">
+                                <td>{{dataList.key}}</td>
+                                <td>{{dataList.value}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="container-fluid">
+        <p class="text-muted">
+            <a href="https://github.com/demorfi/nutui" target="_blank">
+                <i class="fa fa-code"></i> with <i class="fa fa-heart"></i> in Siberia.
+            </a>
+        </p>
+    </div>
+</footer>
+
+<script type="text/ng-template" id="deviceSetting.html">
+    <form name="form" ng-submit="sendData()" novalidate role="form">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                    ng-click="modalClose()">&times;</button>
+            <h4 class="modal-title">{{title}}</h4>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="deviceSelect">Select UPS</label>
+                <select id="deviceSelect" class="form-control" ng-model="user.monups"
+                        ng-init="user.monups = devices[0].host"
+                        ng-options="device.host as device.system for device in devices"></select>
+            </div>
+            <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+
+            <div ng-show="settings || commands">
+                <tabset justified="true" type="pills">
+
+                    <tab heading="Settings" select="tabSelect()">
+                        <div ng-show="settings">
+                            <div class="form-group" ng-repeat="setting in settings">
+                                <label for="settingId{{$index}}">{{setting.name}}</label>
+                                <input type="text" id="settingId{{$index}}" class="form-control"
+                                       ng-model="setting.value" />
+                            </div>
+                        </div>
+                    </tab>
+
+                    <tab heading="Commands" select="tabSelect()">
+                        <div ng-show="commands">
+                            <div class="form-group">
+                                <label for="commandSelect">Instant commands</label>
+                                <select id="commandSelect" class="form-control" ng-model="user.upscommand"
+                                        ng-options="command.var as command.name for command in commands">
+                                    <option value="">Nothing selected</option>
+                                </select>
+                            </div>
+                        </div>
+                    </tab>
+
+                </tabset>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary pull-left" ng-if="devices" ng-click="fetch()">
+                Fetch
+            </button>
+            <button type="submit" class="btn btn-warning pull-right" ng-show="commands || settings">Send</button>
+        </div>
+    </form>
+</script>
+
+<script src="javascripts/jquery.min.js"></script>
+<script src="javascripts/angular.min.js"></script>
+<script src="javascripts/angular-resource.min.js"></script>
+<script src="javascripts/angular-route.min.js"></script>
+<script src="javascripts/ui-bootstrap-tpls.min.js"></script>
+<script src="javascripts/app.js"></script>
+</body>
+</html>

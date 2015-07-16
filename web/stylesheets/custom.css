@@ -1,0 +1,63 @@
+/**
+ * Network UPS Tools UI Bootstrap.
+ *
+ * @author demorfi <demorfi@gmail.com>
+ * @version 1.0
+ * @source https://github.com/demorfi/nutui
+ * @license http://opensource.org/licenses/MIT Licensed under MIT License
+ */
+
+html
+{
+    position   : relative;
+    min-height : 100%;
+}
+
+body
+{
+    font-family      : "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size        : 14px;
+    line-height      : 1.42857;
+    color            : #333;
+    background-color : #fff;
+    padding-top      : 70px;
+    margin-bottom    : 60px;
+}
+
+footer
+{
+    position         : absolute;
+    bottom           : 0;
+    width            : 100%;
+    height           : 60px;
+    background-color : #f5f5f5;
+}
+
+footer a:hover
+{
+    text-decoration : none;
+}
+
+footer .text-muted
+{
+    margin : 20px 0;
+}
+
+.table-responsive,
+.tab-content
+{
+    margin : 10px 0;
+}
+
+.nav,
+.pagination,
+.carousel,
+.panel-title a
+{
+    cursor : pointer;
+}
+
+.alert span
+{
+    white-space : pre;
+}
