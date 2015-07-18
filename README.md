@@ -29,10 +29,10 @@ Install
 Screenshots
 ===========
 Active UPS list
-![upslist](https://cloud.githubusercontent.com/assets/7579267/8732246/a56e465a-2c15-11e5-89b3-f3c413c539e4.png)
+![upslist](https://cloud.githubusercontent.com/assets/7579267/8759661/0bd73bc4-2d13-11e5-8d7c-bb158566e3c9.png)
 
 Send command to UPS
-![commands](https://cloud.githubusercontent.com/assets/7579267/8732245/a54996e8-2c15-11e5-9584-d46206fea604.png)
+![commands](https://cloud.githubusercontent.com/assets/7579267/8759660/0bd5d220-2d13-11e5-9e26-876d5b5ba051.png)
 
 Change Log
 ==========
