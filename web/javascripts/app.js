@@ -138,13 +138,13 @@ app.controller('ProgressCtrl', [
     '$scope', function ($scope)
     {
         /** @namespace $scope.device.data.keys.battery_charge_low Battery level low charge */
-        var low = parseInt($scope.device.data.keys.battery_charge_low) | 10;
+        var low = parseInt($scope.device.data.keys.battery_charge_low) || 10;
 
         /** @namespace $scope.device.data.keys.battery_charge_warning Battery level warning charge */
-        var warning = parseInt($scope.device.data.keys.battery_charge_warning) | 30;
+        var warning = parseInt($scope.device.data.keys.battery_charge_warning) || 30;
 
         /** @namespace $scope.device.battery Battery level charge */
-        var percent = parseInt($scope.device.battery) | 0,
+        var percent = parseInt($scope.device.battery) || 0,
             charge  = (low + warning);
 
         $scope.cells = [
