@@ -76,7 +76,7 @@ app.controller('DevicesCtrl', [
                     {
                         if (index in keyList) {
                             var value = $.trim($(this).text().replace(/\n/g, ''));
-                            item[keyList[index]] = value ? value : '‐';
+                            item[keyList[index]] = value ? value : '-';
                         }
                     }).first().children('a').get(0).search.replace('?host=', '');
                     return (item);
@@ -107,7 +107,7 @@ app.controller('DevicesCtrl', [
                         var value = $.trim($(this).find('td:last').text()),
                             item  = {
                                 key  : $.trim($(this).find('td:first').text()),
-                                value: value ? value : '‐'
+                                value: value ? value : '-'
                             };
 
                         data.keys[item.key.replace(/\./g, '_')] = item.value;
