@@ -59,7 +59,7 @@
                         <div ng-repeat="cell in cells"
                              class="progress-bar progress-bar-{{cell.type}} progress-bar-striped"
                              ng-class="{active: cell.isActive}" ng-style="{width: '{{cell.percent}}%'}">
-                            <span ng-class="{'sr-only': !cell.isActive}">{{device.battery}}</span>
+                            <span ng-class="{'sr-only': !cell.isActive}">{{cell.percent}}%</span>
                         </div>
                     </div>
                     <dl class="dl-horizontal pull-left">

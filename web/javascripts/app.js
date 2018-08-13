@@ -145,23 +145,23 @@ app.controller('ProgressCtrl', [
 
         /** @namespace $scope.device.battery Battery level charge */
         var percent = parseInt($scope.device.battery) || 0,
-            charge  = (low + warning);
+            charge  = (low + (warning - low));
 
         $scope.cells = [
             {
                 type    : 'danger', // width 10%
                 percent : percent < 1 ? 0 : (percent < low ? percent : low),
-                isActive: percent < low && percent > 0
+                isActive: percent <= low && percent > 0
             },
             {
                 type    : 'warning', // width 30%
-                percent : percent < low ? 0 : (percent < charge ? percent - low : warning),
-                isActive: percent < charge && percent > low
+                percent : percent < low ? 0 : (percent < charge ? percent - low : warning - low),
+                isActive: percent <= charge && percent > low
             },
             {
                 type    : 'success', // width 60%
                 percent : percent < charge ? 0 : percent - charge,
-                isActive: percent < 99 && percent > charge
+                isActive: percent < 100 && percent > charge
             }
         ];
     }
