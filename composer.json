@@ -13,6 +13,9 @@
   ],
   "require": {
     "angular-ui/bootstrap": "dev-master",
-    "fortawesome/font-awesome": "4.0.*@dev"
+    "fortawesome/font-awesome": "4.3.*@dev",
+    "components/jquery": "2.1.*@dev",
+    "components/angular.js": "1.3.*@dev",
+    "twitter/bootstrap": "3.3.*@dev"
   }
 }
